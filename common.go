@@ -9,11 +9,21 @@ var KafkaTopic = struct {
 }
 
 var OrderType = struct {
-	Limit  int8
-	Market int8
+	Limit           int8
+	Market          int8
+	StopLoss        int8
+	StopLossLimit   int8
+	TakeProfit      int8
+	TakeProfitLimit int8
+	LimitMaker      int8
 }{
-	Limit:  1,
-	Market: 2,
+	Limit:           1,
+	Market:          2,
+	StopLoss:        3,
+	StopLossLimit:   4,
+	TakeProfit:      5,
+	TakeProfitLimit: 6,
+	LimitMaker:      7,
 }
 
 var Side = struct {

@@ -14,6 +14,38 @@ type CommonHeader struct {
 	IsLastTransaction bool  `msg:"cL"`
 }
 
-func (z CommonHeader) GetCommonHeader() CommonHeader {
-	return z
+func (z *CommonHeader) SetSourceKafkaTopic(topicId int8) {
+	z.SourceKafkaTopic = topicId
+}
+
+func (z *CommonHeader) SetSourceKafkaOffset(offset int64) {
+	z.SourceKafkaOffset = offset
+}
+
+func (z *CommonHeader) SetSourceSeqNum(seqNum int64) {
+	z.SourceSeqNum = seqNum
+}
+
+func (z *CommonHeader) SetSeqNum(seqNum int64) {
+	z.SeqNum = seqNum
+}
+
+func (z *CommonHeader) SetKafkaOffset(offset int64) {
+	z.KafkaOffset = offset
+}
+
+func (z *CommonHeader) SetTransactionId(transId int64) {
+	z.TransactionId = transId
+}
+
+func (z *CommonHeader) SetIsLastTransaction(isLastTransaction bool) {
+	z.IsLastTransaction = isLastTransaction
+}
+
+func (z *CommonHeader) SetInputTime(inputTime int64) {
+	z.InputTime = inputTime
+}
+
+func (z *CommonHeader) SetSendTime(sendTime int64) {
+	z.SendTime = sendTime
 }

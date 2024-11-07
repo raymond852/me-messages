@@ -73,3 +73,21 @@ var OrderExecType = struct {
 	Expired:         4,
 	TradePrevention: 5,
 }
+
+var BalanceAdjustType = struct {
+	Deposit  int8
+	Withdraw int8
+}{
+	Deposit:  1,
+	Withdraw: 2,
+}
+
+var BalanceUpdateType = struct {
+	Order    int8
+	Deposit  int8
+	Withdraw int8
+}{
+	Order:    1,
+	Deposit:  2,
+	Withdraw: 3,
+}

@@ -1,6 +1,8 @@
 package messages
 
 type CommonMessage interface {
+	GetCommonHeader() CommonHeader
+
 	SetSourceKafkaTopic(topicId int8)
 	GetSourceKafkaTopic() int8
 

@@ -14,6 +14,10 @@ type CommonHeader struct {
 	IsLastTransaction bool  `msg:"cL"`
 }
 
+func (z *CommonHeader) GetCommonHeader() CommonHeader {
+	return *z
+}
+
 func (z *CommonHeader) SetSourceKafkaTopic(topicId int8) {
 	z.SourceKafkaTopic = topicId
 }

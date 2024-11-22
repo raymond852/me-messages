@@ -18,7 +18,6 @@ type ExecutionReport struct {
 	OrderStatus          int8   `msg:"X"`
 	ExecutionType        int8   `msg:"x"`
 	OrderId              int64  `msg:"i"`
-	ExternalOrderId      int64  `msg:"I"`
 	LastQty              int64  `msg:"l"`
 	LastPrice            int64  `msg:"L"`
 	CumQty               int64  `msg:"z"`

@@ -4,7 +4,6 @@ package messages
 
 type PlaceOrder struct {
 	CommonHeader
-	ExternalOrderId         int64  `msg:"i"`
 	ClOrderId               string `msg:"c"`
 	UserId                  int32  `msg:"u"`
 	SymbolId                int32  `msg:"s"`

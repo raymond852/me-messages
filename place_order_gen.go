@@ -30,12 +30,6 @@ func (z *PlaceOrder) DecodeMsg(dc *msgp.Reader) (err error) {
 				err = msgp.WrapError(err, "CommonHeader")
 				return
 			}
-		case "i":
-			z.ExternalOrderId, err = dc.ReadInt64()
-			if err != nil {
-				err = msgp.WrapError(err, "ExternalOrderId")
-				return
-			}
 		case "c":
 			z.ClOrderId, err = dc.ReadString()
 			if err != nil {
@@ -121,25 +115,15 @@ func (z *PlaceOrder) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *PlaceOrder) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 14
+	// map header, size 13
 	// write "CommonHeader"
-	err = en.Append(0x8e, 0xac, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x48, 0x65, 0x61, 0x64, 0x65, 0x72)
+	err = en.Append(0x8d, 0xac, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x48, 0x65, 0x61, 0x64, 0x65, 0x72)
 	if err != nil {
 		return
 	}
 	err = z.CommonHeader.EncodeMsg(en)
 	if err != nil {
 		err = msgp.WrapError(err, "CommonHeader")
-		return
-	}
-	// write "i"
-	err = en.Append(0xa1, 0x69)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.ExternalOrderId)
-	if err != nil {
-		err = msgp.WrapError(err, "ExternalOrderId")
 		return
 	}
 	// write "c"
@@ -268,17 +252,14 @@ func (z *PlaceOrder) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *PlaceOrder) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 14
+	// map header, size 13
 	// string "CommonHeader"
-	o = append(o, 0x8e, 0xac, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x48, 0x65, 0x61, 0x64, 0x65, 0x72)
+	o = append(o, 0x8d, 0xac, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x48, 0x65, 0x61, 0x64, 0x65, 0x72)
 	o, err = z.CommonHeader.MarshalMsg(o)
 	if err != nil {
 		err = msgp.WrapError(err, "CommonHeader")
 		return
 	}
-	// string "i"
-	o = append(o, 0xa1, 0x69)
-	o = msgp.AppendInt64(o, z.ExternalOrderId)
 	// string "c"
 	o = append(o, 0xa1, 0x63)
 	o = msgp.AppendString(o, z.ClOrderId)
@@ -340,12 +321,6 @@ func (z *PlaceOrder) UnmarshalMsg(bts []byte) (o []byte, err error) {
 			bts, err = z.CommonHeader.UnmarshalMsg(bts)
 			if err != nil {
 				err = msgp.WrapError(err, "CommonHeader")
-				return
-			}
-		case "i":
-			z.ExternalOrderId, bts, err = msgp.ReadInt64Bytes(bts)
-			if err != nil {
-				err = msgp.WrapError(err, "ExternalOrderId")
 				return
 			}
 		case "c":
@@ -434,6 +409,6 @@ func (z *PlaceOrder) UnmarshalMsg(bts []byte) (o []byte, err error) {
 
 // Msgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
 func (z *PlaceOrder) Msgsize() (s int) {
-	s = 1 + 13 + z.CommonHeader.Msgsize() + 2 + msgp.Int64Size + 2 + msgp.StringPrefixSize + len(z.ClOrderId) + 2 + msgp.Int32Size + 2 + msgp.Int32Size + 2 + msgp.Int8Size + 2 + msgp.Int8Size + 2 + msgp.Int8Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.StringPrefixSize + len(z.NewClientOrderId) + 2 + msgp.Int64Size + 2 + msgp.Int8Size
+	s = 1 + 13 + z.CommonHeader.Msgsize() + 2 + msgp.StringPrefixSize + len(z.ClOrderId) + 2 + msgp.Int32Size + 2 + msgp.Int32Size + 2 + msgp.Int8Size + 2 + msgp.Int8Size + 2 + msgp.Int8Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.StringPrefixSize + len(z.NewClientOrderId) + 2 + msgp.Int64Size + 2 + msgp.Int8Size
 	return
 }

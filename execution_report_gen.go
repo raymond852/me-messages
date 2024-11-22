@@ -96,12 +96,6 @@ func (z *ExecutionReport) DecodeMsg(dc *msgp.Reader) (err error) {
 				err = msgp.WrapError(err, "OrderId")
 				return
 			}
-		case "I":
-			z.ExternalOrderId, err = dc.ReadInt64()
-			if err != nil {
-				err = msgp.WrapError(err, "ExternalOrderId")
-				return
-			}
 		case "l":
 			z.LastQty, err = dc.ReadInt64()
 			if err != nil {
@@ -235,9 +229,9 @@ func (z *ExecutionReport) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *ExecutionReport) EncodeMsg(en *msgp.Writer) (err error) {
-	// omitempty: check for empty values
-	zb0001Len := uint32(33)
-	var zb0001Mask uint64 /* 33 bits */
+	// check for omitted fields
+	zb0001Len := uint32(32)
+	var zb0001Mask uint32 /* 32 bits */
 	_ = zb0001Mask
 	if z.TimeInForce == 0 {
 		zb0001Len--
@@ -245,384 +239,375 @@ func (z *ExecutionReport) EncodeMsg(en *msgp.Writer) (err error) {
 	}
 	if z.QuoteOrderQty == 0 {
 		zb0001Len--
-		zb0001Mask |= 0x800000
+		zb0001Mask |= 0x400000
 	}
 	if z.StrategyId == 0 {
 		zb0001Len--
-		zb0001Mask |= 0x1000000
+		zb0001Mask |= 0x800000
 	}
 	if z.CounterOrderId == 0 {
 		zb0001Len--
-		zb0001Mask |= 0x10000000
+		zb0001Mask |= 0x8000000
 	}
 	if z.PreventedQty == 0 {
 		zb0001Len--
-		zb0001Mask |= 0x20000000
+		zb0001Mask |= 0x10000000
 	}
 	if z.LastPreventedQty == 0 {
 		zb0001Len--
-		zb0001Mask |= 0x40000000
+		zb0001Mask |= 0x20000000
 	}
 	if z.CounterPartyUserId == 0 {
 		zb0001Len--
-		zb0001Mask |= 0x80000000
+		zb0001Mask |= 0x40000000
 	}
 	if z.CounterPartyOrderId == 0 {
 		zb0001Len--
-		zb0001Mask |= 0x100000000
+		zb0001Mask |= 0x80000000
 	}
 	// variable map header, size zb0001Len
 	err = en.WriteMapHeader(zb0001Len)
 	if err != nil {
 		return
 	}
-	if zb0001Len == 0 {
-		return
-	}
-	// write "a"
-	err = en.Append(0xa1, 0x61)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt32(z.AccountId)
-	if err != nil {
-		err = msgp.WrapError(err, "AccountId")
-		return
-	}
-	// write "s"
-	err = en.Append(0xa1, 0x73)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt32(z.SymbolId)
-	if err != nil {
-		err = msgp.WrapError(err, "SymbolId")
-		return
-	}
-	// write "S"
-	err = en.Append(0xa1, 0x53)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt8(z.Side)
-	if err != nil {
-		err = msgp.WrapError(err, "Side")
-		return
-	}
-	// write "o"
-	err = en.Append(0xa1, 0x6f)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt8(z.OrderType)
-	if err != nil {
-		err = msgp.WrapError(err, "OrderType")
-		return
-	}
-	// write "c"
-	err = en.Append(0xa1, 0x63)
-	if err != nil {
-		return
-	}
-	err = en.WriteString(z.ClientOrderId)
-	if err != nil {
-		err = msgp.WrapError(err, "ClientOrderId")
-		return
-	}
-	if (zb0001Mask & 0x20) == 0 { // if not empty
-		// write "f"
-		err = en.Append(0xa1, 0x66)
+
+	// skip if no fields are to be emitted
+	if zb0001Len != 0 {
+		// write "a"
+		err = en.Append(0xa1, 0x61)
 		if err != nil {
 			return
 		}
-		err = en.WriteInt8(z.TimeInForce)
+		err = en.WriteInt32(z.AccountId)
 		if err != nil {
-			err = msgp.WrapError(err, "TimeInForce")
+			err = msgp.WrapError(err, "AccountId")
 			return
 		}
-	}
-	// write "p"
-	err = en.Append(0xa1, 0x70)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.Price)
-	if err != nil {
-		err = msgp.WrapError(err, "Price")
-		return
-	}
-	// write "q"
-	err = en.Append(0xa1, 0x71)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.Quantity)
-	if err != nil {
-		err = msgp.WrapError(err, "Quantity")
-		return
-	}
-	// write "P"
-	err = en.Append(0xa1, 0x50)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.StopPrice)
-	if err != nil {
-		err = msgp.WrapError(err, "StopPrice")
-		return
-	}
-	// write "X"
-	err = en.Append(0xa1, 0x58)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt8(z.OrderStatus)
-	if err != nil {
-		err = msgp.WrapError(err, "OrderStatus")
-		return
-	}
-	// write "x"
-	err = en.Append(0xa1, 0x78)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt8(z.ExecutionType)
-	if err != nil {
-		err = msgp.WrapError(err, "ExecutionType")
-		return
-	}
-	// write "i"
-	err = en.Append(0xa1, 0x69)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.OrderId)
-	if err != nil {
-		err = msgp.WrapError(err, "OrderId")
-		return
-	}
-	// write "I"
-	err = en.Append(0xa1, 0x49)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.ExternalOrderId)
-	if err != nil {
-		err = msgp.WrapError(err, "ExternalOrderId")
-		return
-	}
-	// write "l"
-	err = en.Append(0xa1, 0x6c)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.LastQty)
-	if err != nil {
-		err = msgp.WrapError(err, "LastQty")
-		return
-	}
-	// write "L"
-	err = en.Append(0xa1, 0x4c)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.LastPrice)
-	if err != nil {
-		err = msgp.WrapError(err, "LastPrice")
-		return
-	}
-	// write "z"
-	err = en.Append(0xa1, 0x7a)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.CumQty)
-	if err != nil {
-		err = msgp.WrapError(err, "CumQty")
-		return
-	}
-	// write "n"
-	err = en.Append(0xa1, 0x6e)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.Commission)
-	if err != nil {
-		err = msgp.WrapError(err, "Commission")
-		return
-	}
-	// write "N"
-	err = en.Append(0xa1, 0x4e)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt32(z.CommissionAssetId)
-	if err != nil {
-		err = msgp.WrapError(err, "CommissionAssetId")
-		return
-	}
-	// write "T"
-	err = en.Append(0xa1, 0x54)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.TransactionTime)
-	if err != nil {
-		err = msgp.WrapError(err, "TransactionTime")
-		return
-	}
-	// write "t"
-	err = en.Append(0xa1, 0x74)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.TradeId)
-	if err != nil {
-		err = msgp.WrapError(err, "TradeId")
-		return
-	}
-	// write "m"
-	err = en.Append(0xa1, 0x6d)
-	if err != nil {
-		return
-	}
-	err = en.WriteBool(z.IsMaker)
-	if err != nil {
-		err = msgp.WrapError(err, "IsMaker")
-		return
-	}
-	// write "O"
-	err = en.Append(0xa1, 0x4f)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.CreateTime)
-	if err != nil {
-		err = msgp.WrapError(err, "CreateTime")
-		return
-	}
-	// write "Z"
-	err = en.Append(0xa1, 0x5a)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.CumQuoteQty)
-	if err != nil {
-		err = msgp.WrapError(err, "CumQuoteQty")
-		return
-	}
-	if (zb0001Mask & 0x800000) == 0 { // if not empty
-		// write "Q"
-		err = en.Append(0xa1, 0x51)
+		// write "s"
+		err = en.Append(0xa1, 0x73)
 		if err != nil {
 			return
 		}
-		err = en.WriteInt64(z.QuoteOrderQty)
+		err = en.WriteInt32(z.SymbolId)
 		if err != nil {
-			err = msgp.WrapError(err, "QuoteOrderQty")
+			err = msgp.WrapError(err, "SymbolId")
 			return
 		}
-	}
-	if (zb0001Mask & 0x1000000) == 0 { // if not empty
-		// write "j"
-		err = en.Append(0xa1, 0x6a)
+		// write "S"
+		err = en.Append(0xa1, 0x53)
 		if err != nil {
 			return
 		}
-		err = en.WriteInt64(z.StrategyId)
+		err = en.WriteInt8(z.Side)
 		if err != nil {
-			err = msgp.WrapError(err, "StrategyId")
+			err = msgp.WrapError(err, "Side")
 			return
 		}
-	}
-	// write "J"
-	err = en.Append(0xa1, 0x4a)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt8(z.StrategyType)
-	if err != nil {
-		err = msgp.WrapError(err, "StrategyType")
-		return
-	}
-	// write "V"
-	err = en.Append(0xa1, 0x56)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt8(z.SelfTradePreventMode)
-	if err != nil {
-		err = msgp.WrapError(err, "SelfTradePreventMode")
-		return
-	}
-	// write "u"
-	err = en.Append(0xa1, 0x75)
-	if err != nil {
-		return
-	}
-	err = en.WriteInt64(z.TradeGroupId)
-	if err != nil {
-		err = msgp.WrapError(err, "TradeGroupId")
-		return
-	}
-	if (zb0001Mask & 0x10000000) == 0 { // if not empty
-		// write "U"
-		err = en.Append(0xa1, 0x55)
+		// write "o"
+		err = en.Append(0xa1, 0x6f)
 		if err != nil {
 			return
 		}
-		err = en.WriteInt64(z.CounterOrderId)
+		err = en.WriteInt8(z.OrderType)
 		if err != nil {
-			err = msgp.WrapError(err, "CounterOrderId")
+			err = msgp.WrapError(err, "OrderType")
 			return
 		}
-	}
-	if (zb0001Mask & 0x20000000) == 0 { // if not empty
-		// write "A"
-		err = en.Append(0xa1, 0x41)
+		// write "c"
+		err = en.Append(0xa1, 0x63)
 		if err != nil {
 			return
 		}
-		err = en.WriteInt64(z.PreventedQty)
+		err = en.WriteString(z.ClientOrderId)
 		if err != nil {
-			err = msgp.WrapError(err, "PreventedQty")
+			err = msgp.WrapError(err, "ClientOrderId")
 			return
 		}
-	}
-	if (zb0001Mask & 0x40000000) == 0 { // if not empty
-		// write "B"
-		err = en.Append(0xa1, 0x42)
-		if err != nil {
-			return
+		if (zb0001Mask & 0x20) == 0 { // if not omitted
+			// write "f"
+			err = en.Append(0xa1, 0x66)
+			if err != nil {
+				return
+			}
+			err = en.WriteInt8(z.TimeInForce)
+			if err != nil {
+				err = msgp.WrapError(err, "TimeInForce")
+				return
+			}
 		}
-		err = en.WriteInt64(z.LastPreventedQty)
-		if err != nil {
-			err = msgp.WrapError(err, "LastPreventedQty")
-			return
-		}
-	}
-	if (zb0001Mask & 0x80000000) == 0 { // if not empty
-		// write "k"
-		err = en.Append(0xa1, 0x6b)
+		// write "p"
+		err = en.Append(0xa1, 0x70)
 		if err != nil {
 			return
 		}
-		err = en.WriteInt32(z.CounterPartyUserId)
+		err = en.WriteInt64(z.Price)
 		if err != nil {
-			err = msgp.WrapError(err, "CounterPartyUserId")
+			err = msgp.WrapError(err, "Price")
 			return
 		}
-	}
-	if (zb0001Mask & 0x100000000) == 0 { // if not empty
-		// write "K"
-		err = en.Append(0xa1, 0x4b)
+		// write "q"
+		err = en.Append(0xa1, 0x71)
 		if err != nil {
 			return
 		}
-		err = en.WriteInt64(z.CounterPartyOrderId)
+		err = en.WriteInt64(z.Quantity)
 		if err != nil {
-			err = msgp.WrapError(err, "CounterPartyOrderId")
+			err = msgp.WrapError(err, "Quantity")
 			return
+		}
+		// write "P"
+		err = en.Append(0xa1, 0x50)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt64(z.StopPrice)
+		if err != nil {
+			err = msgp.WrapError(err, "StopPrice")
+			return
+		}
+		// write "X"
+		err = en.Append(0xa1, 0x58)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt8(z.OrderStatus)
+		if err != nil {
+			err = msgp.WrapError(err, "OrderStatus")
+			return
+		}
+		// write "x"
+		err = en.Append(0xa1, 0x78)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt8(z.ExecutionType)
+		if err != nil {
+			err = msgp.WrapError(err, "ExecutionType")
+			return
+		}
+		// write "i"
+		err = en.Append(0xa1, 0x69)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt64(z.OrderId)
+		if err != nil {
+			err = msgp.WrapError(err, "OrderId")
+			return
+		}
+		// write "l"
+		err = en.Append(0xa1, 0x6c)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt64(z.LastQty)
+		if err != nil {
+			err = msgp.WrapError(err, "LastQty")
+			return
+		}
+		// write "L"
+		err = en.Append(0xa1, 0x4c)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt64(z.LastPrice)
+		if err != nil {
+			err = msgp.WrapError(err, "LastPrice")
+			return
+		}
+		// write "z"
+		err = en.Append(0xa1, 0x7a)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt64(z.CumQty)
+		if err != nil {
+			err = msgp.WrapError(err, "CumQty")
+			return
+		}
+		// write "n"
+		err = en.Append(0xa1, 0x6e)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt64(z.Commission)
+		if err != nil {
+			err = msgp.WrapError(err, "Commission")
+			return
+		}
+		// write "N"
+		err = en.Append(0xa1, 0x4e)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt32(z.CommissionAssetId)
+		if err != nil {
+			err = msgp.WrapError(err, "CommissionAssetId")
+			return
+		}
+		// write "T"
+		err = en.Append(0xa1, 0x54)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt64(z.TransactionTime)
+		if err != nil {
+			err = msgp.WrapError(err, "TransactionTime")
+			return
+		}
+		// write "t"
+		err = en.Append(0xa1, 0x74)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt64(z.TradeId)
+		if err != nil {
+			err = msgp.WrapError(err, "TradeId")
+			return
+		}
+		// write "m"
+		err = en.Append(0xa1, 0x6d)
+		if err != nil {
+			return
+		}
+		err = en.WriteBool(z.IsMaker)
+		if err != nil {
+			err = msgp.WrapError(err, "IsMaker")
+			return
+		}
+		// write "O"
+		err = en.Append(0xa1, 0x4f)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt64(z.CreateTime)
+		if err != nil {
+			err = msgp.WrapError(err, "CreateTime")
+			return
+		}
+		// write "Z"
+		err = en.Append(0xa1, 0x5a)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt64(z.CumQuoteQty)
+		if err != nil {
+			err = msgp.WrapError(err, "CumQuoteQty")
+			return
+		}
+		if (zb0001Mask & 0x400000) == 0 { // if not omitted
+			// write "Q"
+			err = en.Append(0xa1, 0x51)
+			if err != nil {
+				return
+			}
+			err = en.WriteInt64(z.QuoteOrderQty)
+			if err != nil {
+				err = msgp.WrapError(err, "QuoteOrderQty")
+				return
+			}
+		}
+		if (zb0001Mask & 0x800000) == 0 { // if not omitted
+			// write "j"
+			err = en.Append(0xa1, 0x6a)
+			if err != nil {
+				return
+			}
+			err = en.WriteInt64(z.StrategyId)
+			if err != nil {
+				err = msgp.WrapError(err, "StrategyId")
+				return
+			}
+		}
+		// write "J"
+		err = en.Append(0xa1, 0x4a)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt8(z.StrategyType)
+		if err != nil {
+			err = msgp.WrapError(err, "StrategyType")
+			return
+		}
+		// write "V"
+		err = en.Append(0xa1, 0x56)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt8(z.SelfTradePreventMode)
+		if err != nil {
+			err = msgp.WrapError(err, "SelfTradePreventMode")
+			return
+		}
+		// write "u"
+		err = en.Append(0xa1, 0x75)
+		if err != nil {
+			return
+		}
+		err = en.WriteInt64(z.TradeGroupId)
+		if err != nil {
+			err = msgp.WrapError(err, "TradeGroupId")
+			return
+		}
+		if (zb0001Mask & 0x8000000) == 0 { // if not omitted
+			// write "U"
+			err = en.Append(0xa1, 0x55)
+			if err != nil {
+				return
+			}
+			err = en.WriteInt64(z.CounterOrderId)
+			if err != nil {
+				err = msgp.WrapError(err, "CounterOrderId")
+				return
+			}
+		}
+		if (zb0001Mask & 0x10000000) == 0 { // if not omitted
+			// write "A"
+			err = en.Append(0xa1, 0x41)
+			if err != nil {
+				return
+			}
+			err = en.WriteInt64(z.PreventedQty)
+			if err != nil {
+				err = msgp.WrapError(err, "PreventedQty")
+				return
+			}
+		}
+		if (zb0001Mask & 0x20000000) == 0 { // if not omitted
+			// write "B"
+			err = en.Append(0xa1, 0x42)
+			if err != nil {
+				return
+			}
+			err = en.WriteInt64(z.LastPreventedQty)
+			if err != nil {
+				err = msgp.WrapError(err, "LastPreventedQty")
+				return
+			}
+		}
+		if (zb0001Mask & 0x40000000) == 0 { // if not omitted
+			// write "k"
+			err = en.Append(0xa1, 0x6b)
+			if err != nil {
+				return
+			}
+			err = en.WriteInt32(z.CounterPartyUserId)
+			if err != nil {
+				err = msgp.WrapError(err, "CounterPartyUserId")
+				return
+			}
+		}
+		if (zb0001Mask & 0x80000000) == 0 { // if not omitted
+			// write "K"
+			err = en.Append(0xa1, 0x4b)
+			if err != nil {
+				return
+			}
+			err = en.WriteInt64(z.CounterPartyOrderId)
+			if err != nil {
+				err = msgp.WrapError(err, "CounterPartyOrderId")
+				return
+			}
 		}
 	}
 	return
@@ -631,9 +616,9 @@ func (z *ExecutionReport) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *ExecutionReport) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// omitempty: check for empty values
-	zb0001Len := uint32(33)
-	var zb0001Mask uint64 /* 33 bits */
+	// check for omitted fields
+	zb0001Len := uint32(32)
+	var zb0001Mask uint32 /* 32 bits */
 	_ = zb0001Mask
 	if z.TimeInForce == 0 {
 		zb0001Len--
@@ -641,151 +626,149 @@ func (z *ExecutionReport) MarshalMsg(b []byte) (o []byte, err error) {
 	}
 	if z.QuoteOrderQty == 0 {
 		zb0001Len--
-		zb0001Mask |= 0x800000
+		zb0001Mask |= 0x400000
 	}
 	if z.StrategyId == 0 {
 		zb0001Len--
-		zb0001Mask |= 0x1000000
+		zb0001Mask |= 0x800000
 	}
 	if z.CounterOrderId == 0 {
 		zb0001Len--
-		zb0001Mask |= 0x10000000
+		zb0001Mask |= 0x8000000
 	}
 	if z.PreventedQty == 0 {
 		zb0001Len--
-		zb0001Mask |= 0x20000000
+		zb0001Mask |= 0x10000000
 	}
 	if z.LastPreventedQty == 0 {
 		zb0001Len--
-		zb0001Mask |= 0x40000000
+		zb0001Mask |= 0x20000000
 	}
 	if z.CounterPartyUserId == 0 {
 		zb0001Len--
-		zb0001Mask |= 0x80000000
+		zb0001Mask |= 0x40000000
 	}
 	if z.CounterPartyOrderId == 0 {
 		zb0001Len--
-		zb0001Mask |= 0x100000000
+		zb0001Mask |= 0x80000000
 	}
 	// variable map header, size zb0001Len
 	o = msgp.AppendMapHeader(o, zb0001Len)
-	if zb0001Len == 0 {
-		return
-	}
-	// string "a"
-	o = append(o, 0xa1, 0x61)
-	o = msgp.AppendInt32(o, z.AccountId)
-	// string "s"
-	o = append(o, 0xa1, 0x73)
-	o = msgp.AppendInt32(o, z.SymbolId)
-	// string "S"
-	o = append(o, 0xa1, 0x53)
-	o = msgp.AppendInt8(o, z.Side)
-	// string "o"
-	o = append(o, 0xa1, 0x6f)
-	o = msgp.AppendInt8(o, z.OrderType)
-	// string "c"
-	o = append(o, 0xa1, 0x63)
-	o = msgp.AppendString(o, z.ClientOrderId)
-	if (zb0001Mask & 0x20) == 0 { // if not empty
-		// string "f"
-		o = append(o, 0xa1, 0x66)
-		o = msgp.AppendInt8(o, z.TimeInForce)
-	}
-	// string "p"
-	o = append(o, 0xa1, 0x70)
-	o = msgp.AppendInt64(o, z.Price)
-	// string "q"
-	o = append(o, 0xa1, 0x71)
-	o = msgp.AppendInt64(o, z.Quantity)
-	// string "P"
-	o = append(o, 0xa1, 0x50)
-	o = msgp.AppendInt64(o, z.StopPrice)
-	// string "X"
-	o = append(o, 0xa1, 0x58)
-	o = msgp.AppendInt8(o, z.OrderStatus)
-	// string "x"
-	o = append(o, 0xa1, 0x78)
-	o = msgp.AppendInt8(o, z.ExecutionType)
-	// string "i"
-	o = append(o, 0xa1, 0x69)
-	o = msgp.AppendInt64(o, z.OrderId)
-	// string "I"
-	o = append(o, 0xa1, 0x49)
-	o = msgp.AppendInt64(o, z.ExternalOrderId)
-	// string "l"
-	o = append(o, 0xa1, 0x6c)
-	o = msgp.AppendInt64(o, z.LastQty)
-	// string "L"
-	o = append(o, 0xa1, 0x4c)
-	o = msgp.AppendInt64(o, z.LastPrice)
-	// string "z"
-	o = append(o, 0xa1, 0x7a)
-	o = msgp.AppendInt64(o, z.CumQty)
-	// string "n"
-	o = append(o, 0xa1, 0x6e)
-	o = msgp.AppendInt64(o, z.Commission)
-	// string "N"
-	o = append(o, 0xa1, 0x4e)
-	o = msgp.AppendInt32(o, z.CommissionAssetId)
-	// string "T"
-	o = append(o, 0xa1, 0x54)
-	o = msgp.AppendInt64(o, z.TransactionTime)
-	// string "t"
-	o = append(o, 0xa1, 0x74)
-	o = msgp.AppendInt64(o, z.TradeId)
-	// string "m"
-	o = append(o, 0xa1, 0x6d)
-	o = msgp.AppendBool(o, z.IsMaker)
-	// string "O"
-	o = append(o, 0xa1, 0x4f)
-	o = msgp.AppendInt64(o, z.CreateTime)
-	// string "Z"
-	o = append(o, 0xa1, 0x5a)
-	o = msgp.AppendInt64(o, z.CumQuoteQty)
-	if (zb0001Mask & 0x800000) == 0 { // if not empty
-		// string "Q"
-		o = append(o, 0xa1, 0x51)
-		o = msgp.AppendInt64(o, z.QuoteOrderQty)
-	}
-	if (zb0001Mask & 0x1000000) == 0 { // if not empty
-		// string "j"
-		o = append(o, 0xa1, 0x6a)
-		o = msgp.AppendInt64(o, z.StrategyId)
-	}
-	// string "J"
-	o = append(o, 0xa1, 0x4a)
-	o = msgp.AppendInt8(o, z.StrategyType)
-	// string "V"
-	o = append(o, 0xa1, 0x56)
-	o = msgp.AppendInt8(o, z.SelfTradePreventMode)
-	// string "u"
-	o = append(o, 0xa1, 0x75)
-	o = msgp.AppendInt64(o, z.TradeGroupId)
-	if (zb0001Mask & 0x10000000) == 0 { // if not empty
-		// string "U"
-		o = append(o, 0xa1, 0x55)
-		o = msgp.AppendInt64(o, z.CounterOrderId)
-	}
-	if (zb0001Mask & 0x20000000) == 0 { // if not empty
-		// string "A"
-		o = append(o, 0xa1, 0x41)
-		o = msgp.AppendInt64(o, z.PreventedQty)
-	}
-	if (zb0001Mask & 0x40000000) == 0 { // if not empty
-		// string "B"
-		o = append(o, 0xa1, 0x42)
-		o = msgp.AppendInt64(o, z.LastPreventedQty)
-	}
-	if (zb0001Mask & 0x80000000) == 0 { // if not empty
-		// string "k"
-		o = append(o, 0xa1, 0x6b)
-		o = msgp.AppendInt32(o, z.CounterPartyUserId)
-	}
-	if (zb0001Mask & 0x100000000) == 0 { // if not empty
-		// string "K"
-		o = append(o, 0xa1, 0x4b)
-		o = msgp.AppendInt64(o, z.CounterPartyOrderId)
+
+	// skip if no fields are to be emitted
+	if zb0001Len != 0 {
+		// string "a"
+		o = append(o, 0xa1, 0x61)
+		o = msgp.AppendInt32(o, z.AccountId)
+		// string "s"
+		o = append(o, 0xa1, 0x73)
+		o = msgp.AppendInt32(o, z.SymbolId)
+		// string "S"
+		o = append(o, 0xa1, 0x53)
+		o = msgp.AppendInt8(o, z.Side)
+		// string "o"
+		o = append(o, 0xa1, 0x6f)
+		o = msgp.AppendInt8(o, z.OrderType)
+		// string "c"
+		o = append(o, 0xa1, 0x63)
+		o = msgp.AppendString(o, z.ClientOrderId)
+		if (zb0001Mask & 0x20) == 0 { // if not omitted
+			// string "f"
+			o = append(o, 0xa1, 0x66)
+			o = msgp.AppendInt8(o, z.TimeInForce)
+		}
+		// string "p"
+		o = append(o, 0xa1, 0x70)
+		o = msgp.AppendInt64(o, z.Price)
+		// string "q"
+		o = append(o, 0xa1, 0x71)
+		o = msgp.AppendInt64(o, z.Quantity)
+		// string "P"
+		o = append(o, 0xa1, 0x50)
+		o = msgp.AppendInt64(o, z.StopPrice)
+		// string "X"
+		o = append(o, 0xa1, 0x58)
+		o = msgp.AppendInt8(o, z.OrderStatus)
+		// string "x"
+		o = append(o, 0xa1, 0x78)
+		o = msgp.AppendInt8(o, z.ExecutionType)
+		// string "i"
+		o = append(o, 0xa1, 0x69)
+		o = msgp.AppendInt64(o, z.OrderId)
+		// string "l"
+		o = append(o, 0xa1, 0x6c)
+		o = msgp.AppendInt64(o, z.LastQty)
+		// string "L"
+		o = append(o, 0xa1, 0x4c)
+		o = msgp.AppendInt64(o, z.LastPrice)
+		// string "z"
+		o = append(o, 0xa1, 0x7a)
+		o = msgp.AppendInt64(o, z.CumQty)
+		// string "n"
+		o = append(o, 0xa1, 0x6e)
+		o = msgp.AppendInt64(o, z.Commission)
+		// string "N"
+		o = append(o, 0xa1, 0x4e)
+		o = msgp.AppendInt32(o, z.CommissionAssetId)
+		// string "T"
+		o = append(o, 0xa1, 0x54)
+		o = msgp.AppendInt64(o, z.TransactionTime)
+		// string "t"
+		o = append(o, 0xa1, 0x74)
+		o = msgp.AppendInt64(o, z.TradeId)
+		// string "m"
+		o = append(o, 0xa1, 0x6d)
+		o = msgp.AppendBool(o, z.IsMaker)
+		// string "O"
+		o = append(o, 0xa1, 0x4f)
+		o = msgp.AppendInt64(o, z.CreateTime)
+		// string "Z"
+		o = append(o, 0xa1, 0x5a)
+		o = msgp.AppendInt64(o, z.CumQuoteQty)
+		if (zb0001Mask & 0x400000) == 0 { // if not omitted
+			// string "Q"
+			o = append(o, 0xa1, 0x51)
+			o = msgp.AppendInt64(o, z.QuoteOrderQty)
+		}
+		if (zb0001Mask & 0x800000) == 0 { // if not omitted
+			// string "j"
+			o = append(o, 0xa1, 0x6a)
+			o = msgp.AppendInt64(o, z.StrategyId)
+		}
+		// string "J"
+		o = append(o, 0xa1, 0x4a)
+		o = msgp.AppendInt8(o, z.StrategyType)
+		// string "V"
+		o = append(o, 0xa1, 0x56)
+		o = msgp.AppendInt8(o, z.SelfTradePreventMode)
+		// string "u"
+		o = append(o, 0xa1, 0x75)
+		o = msgp.AppendInt64(o, z.TradeGroupId)
+		if (zb0001Mask & 0x8000000) == 0 { // if not omitted
+			// string "U"
+			o = append(o, 0xa1, 0x55)
+			o = msgp.AppendInt64(o, z.CounterOrderId)
+		}
+		if (zb0001Mask & 0x10000000) == 0 { // if not omitted
+			// string "A"
+			o = append(o, 0xa1, 0x41)
+			o = msgp.AppendInt64(o, z.PreventedQty)
+		}
+		if (zb0001Mask & 0x20000000) == 0 { // if not omitted
+			// string "B"
+			o = append(o, 0xa1, 0x42)
+			o = msgp.AppendInt64(o, z.LastPreventedQty)
+		}
+		if (zb0001Mask & 0x40000000) == 0 { // if not omitted
+			// string "k"
+			o = append(o, 0xa1, 0x6b)
+			o = msgp.AppendInt32(o, z.CounterPartyUserId)
+		}
+		if (zb0001Mask & 0x80000000) == 0 { // if not omitted
+			// string "K"
+			o = append(o, 0xa1, 0x4b)
+			o = msgp.AppendInt64(o, z.CounterPartyOrderId)
+		}
 	}
 	return
 }
@@ -878,12 +861,6 @@ func (z *ExecutionReport) UnmarshalMsg(bts []byte) (o []byte, err error) {
 			z.OrderId, bts, err = msgp.ReadInt64Bytes(bts)
 			if err != nil {
 				err = msgp.WrapError(err, "OrderId")
-				return
-			}
-		case "I":
-			z.ExternalOrderId, bts, err = msgp.ReadInt64Bytes(bts)
-			if err != nil {
-				err = msgp.WrapError(err, "ExternalOrderId")
 				return
 			}
 		case "l":
@@ -1020,6 +997,6 @@ func (z *ExecutionReport) UnmarshalMsg(bts []byte) (o []byte, err error) {
 
 // Msgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
 func (z *ExecutionReport) Msgsize() (s int) {
-	s = 3 + 2 + msgp.Int32Size + 2 + msgp.Int32Size + 2 + msgp.Int8Size + 2 + msgp.Int8Size + 2 + msgp.StringPrefixSize + len(z.ClientOrderId) + 2 + msgp.Int8Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int8Size + 2 + msgp.Int8Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int32Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.BoolSize + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int8Size + 2 + msgp.Int8Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int32Size + 2 + msgp.Int64Size
+	s = 3 + 2 + msgp.Int32Size + 2 + msgp.Int32Size + 2 + msgp.Int8Size + 2 + msgp.Int8Size + 2 + msgp.StringPrefixSize + len(z.ClientOrderId) + 2 + msgp.Int8Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int8Size + 2 + msgp.Int8Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int32Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.BoolSize + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int8Size + 2 + msgp.Int8Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int32Size + 2 + msgp.Int64Size
 	return
 }

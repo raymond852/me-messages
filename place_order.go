@@ -13,7 +13,6 @@ type PlaceOrder struct {
 	Quantity                int64  `msg:"q"`
 	QuoteOrderQty           int64  `msg:"Q"`
 	Price                   int64  `msg:"p"`
-	NewClientOrderId        string `msg:"C"`
 	StopPrice               int64  `msg:"P"`
 	SelfTradePreventionMode int8   `msg:"V"`
 }

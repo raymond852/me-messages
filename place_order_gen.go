@@ -84,12 +84,6 @@ func (z *PlaceOrder) DecodeMsg(dc *msgp.Reader) (err error) {
 				err = msgp.WrapError(err, "Price")
 				return
 			}
-		case "C":
-			z.NewClientOrderId, err = dc.ReadString()
-			if err != nil {
-				err = msgp.WrapError(err, "NewClientOrderId")
-				return
-			}
 		case "P":
 			z.StopPrice, err = dc.ReadInt64()
 			if err != nil {
@@ -115,9 +109,9 @@ func (z *PlaceOrder) DecodeMsg(dc *msgp.Reader) (err error) {
 
 // EncodeMsg implements msgp.Encodable
 func (z *PlaceOrder) EncodeMsg(en *msgp.Writer) (err error) {
-	// map header, size 13
+	// map header, size 12
 	// write "CommonHeader"
-	err = en.Append(0x8d, 0xac, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x48, 0x65, 0x61, 0x64, 0x65, 0x72)
+	err = en.Append(0x8c, 0xac, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x48, 0x65, 0x61, 0x64, 0x65, 0x72)
 	if err != nil {
 		return
 	}
@@ -216,16 +210,6 @@ func (z *PlaceOrder) EncodeMsg(en *msgp.Writer) (err error) {
 		err = msgp.WrapError(err, "Price")
 		return
 	}
-	// write "C"
-	err = en.Append(0xa1, 0x43)
-	if err != nil {
-		return
-	}
-	err = en.WriteString(z.NewClientOrderId)
-	if err != nil {
-		err = msgp.WrapError(err, "NewClientOrderId")
-		return
-	}
 	// write "P"
 	err = en.Append(0xa1, 0x50)
 	if err != nil {
@@ -252,9 +236,9 @@ func (z *PlaceOrder) EncodeMsg(en *msgp.Writer) (err error) {
 // MarshalMsg implements msgp.Marshaler
 func (z *PlaceOrder) MarshalMsg(b []byte) (o []byte, err error) {
 	o = msgp.Require(b, z.Msgsize())
-	// map header, size 13
+	// map header, size 12
 	// string "CommonHeader"
-	o = append(o, 0x8d, 0xac, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x48, 0x65, 0x61, 0x64, 0x65, 0x72)
+	o = append(o, 0x8c, 0xac, 0x43, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x48, 0x65, 0x61, 0x64, 0x65, 0x72)
 	o, err = z.CommonHeader.MarshalMsg(o)
 	if err != nil {
 		err = msgp.WrapError(err, "CommonHeader")
@@ -287,9 +271,6 @@ func (z *PlaceOrder) MarshalMsg(b []byte) (o []byte, err error) {
 	// string "p"
 	o = append(o, 0xa1, 0x70)
 	o = msgp.AppendInt64(o, z.Price)
-	// string "C"
-	o = append(o, 0xa1, 0x43)
-	o = msgp.AppendString(o, z.NewClientOrderId)
 	// string "P"
 	o = append(o, 0xa1, 0x50)
 	o = msgp.AppendInt64(o, z.StopPrice)
@@ -377,12 +358,6 @@ func (z *PlaceOrder) UnmarshalMsg(bts []byte) (o []byte, err error) {
 				err = msgp.WrapError(err, "Price")
 				return
 			}
-		case "C":
-			z.NewClientOrderId, bts, err = msgp.ReadStringBytes(bts)
-			if err != nil {
-				err = msgp.WrapError(err, "NewClientOrderId")
-				return
-			}
 		case "P":
 			z.StopPrice, bts, err = msgp.ReadInt64Bytes(bts)
 			if err != nil {
@@ -409,6 +384,6 @@ func (z *PlaceOrder) UnmarshalMsg(bts []byte) (o []byte, err error) {
 
 // Msgsize returns an upper bound estimate of the number of bytes occupied by the serialized message
 func (z *PlaceOrder) Msgsize() (s int) {
-	s = 1 + 13 + z.CommonHeader.Msgsize() + 2 + msgp.StringPrefixSize + len(z.ClOrderId) + 2 + msgp.Int32Size + 2 + msgp.Int32Size + 2 + msgp.Int8Size + 2 + msgp.Int8Size + 2 + msgp.Int8Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.StringPrefixSize + len(z.NewClientOrderId) + 2 + msgp.Int64Size + 2 + msgp.Int8Size
+	s = 1 + 13 + z.CommonHeader.Msgsize() + 2 + msgp.StringPrefixSize + len(z.ClOrderId) + 2 + msgp.Int32Size + 2 + msgp.Int32Size + 2 + msgp.Int8Size + 2 + msgp.Int8Size + 2 + msgp.Int8Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int64Size + 2 + msgp.Int8Size
 	return
 }
